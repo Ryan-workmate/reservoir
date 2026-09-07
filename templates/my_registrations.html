@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}我的报名 - 校园活动管理系统{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1 class="page-title">我的报名</h1>
+</div>
+
+{% if registrations %}
+    <div class="card" style="padding:0;overflow:hidden;">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>活动名称</th>
+                    <th>活动时间</th>
+                    <th>地点</th>
+                    <th>状态</th>
+                    <th>报名人数</th>
+                    <th>报名时间</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for reg in registrations %}
+                <tr>
+                    <td><a href="{{ url_for('activity_detail', activity_id=reg.activity_id) }}" style="color:#1a73e8;text-decoration:none;">{{ reg.title }}</a></td>
+                    <td>{{ reg.start_time }}</td>
+                    <td>{{ reg.location }}</td>
+                    <td>
+                        <span class="badge {{ 'badge-open' if reg.status == 'open' else 'badge-cancelled' }}">
+                            {{ '报名中' if reg.status == 'open' else '已取消' }}
+                        </span>
+                    </td>
+                    <td>{{ reg.registered_count }}/{{ reg.max_participants }}</td>
+                    <td>{{ reg.reg_time }}</td>
+                    <td>
+                        {% if reg.status == 'open' %}
+                        <form method="POST" action="{{ url_for('cancel_registration', activity_id=reg.activity_id) }}" onsubmit="return confirm('确定要取消报名吗？');" style="display:inline;">
+                            <button type="submit" class="btn btn-sm btn-danger">取消报名</button>
+                        </form>
+                        {% else %}
+                        <span style="color:#999;font-size:13px;">活动已取消</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% else %}
+    <div class="card" style="text-align:center;padding:60px 20px;color:#999;">
+        <p style="font-size:16px;margin-bottom:12px;">您还没有报名任何活动</p>
+        <a href="{{ url_for('activity_list') }}" class="btn btn-primary">去浏览活动</a>
+    </div>
+{% endif %}
+{% endblock %}
