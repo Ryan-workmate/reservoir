@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}校园活动管理系统{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="{{ url_for('activity_list') }}" class="nav-logo">校园活动管理系统</a>
+            <div class="nav-menu">
+                {% if current_user_id %}
+                    <span class="nav-user">{{ current_username }}（{{ '教师' if current_role == 'teacher' else '学生' }}）</span>
+                    <a href="{{ url_for('activity_list') }}" class="nav-link">活动列表</a>
+                    {% if current_role == 'student' %}
+                        <a href="{{ url_for('my_registrations') }}" class="nav-link">我的报名</a>
+                    {% endif %}
+                    {% if current_role == 'teacher' %}
+                        <a href="{{ url_for('create_activity') }}" class="nav-link">发布活动</a>
+                        <a href="{{ url_for('my_activities') }}" class="nav-link">我的活动</a>
+                    {% endif %}
+                    <a href="{{ url_for('logout') }}" class="nav-link nav-logout">退出</a>
+                {% else %}
+                    <a href="{{ url_for('login') }}" class="nav-link">登录</a>
+                    <a href="{{ url_for('register') }}" class="nav-link nav-register">注册</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <main class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="footer">
+        <p>校园活动管理系统 V1.0 &copy; 2026</p>
+    </footer>
+</body>
+</html>

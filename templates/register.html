@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}注册 - 校园活动管理系统{% endblock %}
+
+{% block content %}
+<div class="auth-wrapper">
+    <div class="auth-card">
+        <h2 class="auth-title">注册账号</h2>
+        <p class="auth-subtitle">加入校园活动管理系统</p>
+
+        <form method="POST" action="{{ url_for('register') }}">
+            <div class="form-group">
+                <label class="form-label" for="username">用户名</label>
+                <input type="text" id="username" name="username" class="form-input" placeholder="至少2个字符" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="password">密码</label>
+                <input type="password" id="password" name="password" class="form-input" placeholder="至少6个字符" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="confirm_password">确认密码</label>
+                <input type="password" id="confirm_password" name="confirm_password" class="form-input" placeholder="再次输入密码" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label">选择角色</label>
+                <div class="role-options">
+                    <label class="role-option">
+                        <input type="radio" name="role" value="student" checked>
+                        <span class="role-label">我是学生</span>
+                    </label>
+                    <label class="role-option">
+                        <input type="radio" name="role" value="teacher">
+                        <span class="role-label">我是教师</span>
+                    </label>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">注册</button>
+        </form>
+
+        <div class="auth-footer">
+            已有账号？<a href="{{ url_for('login') }}">去登录</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
